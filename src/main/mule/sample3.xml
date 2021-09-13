@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="51c6b617-ce02-4577-8358-13458547c4d0" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="sample3Flow" doc:id="db4ed30d-7919-4e75-8e2e-bf502095d995" >
+		<http:listener doc:name="Listener" doc:id="9fa5beb3-19ef-4553-bb6c-123301c5817e" config-ref="HTTP_Listener_config" path="/sample3"/>
+		<set-payload value='#["BEFORE"]' doc:name="Set Payload" doc:id="59b20e7f-58ff-4aec-a7ce-d82a6fbb57b8" />
+		<set-payload value='#["AFTER"]' doc:name="Set Payload" doc:id="30ef2a4c-f312-4e6f-9e6c-b632abcd6449" />
+		<logger level="INFO" doc:name="Logger" doc:id="134b2bb4-0fba-45ab-9052-e65ceac0b1e1" message="project executed successfully"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="68d47dce-9146-486d-8b65-51e32af24313" type="VALIDATION:NOT_NULL">
+				<set-payload value='#["Error"]' doc:name="Set Payload" doc:id="ba219428-49cb-4fd1-b995-19c89dbc6508" />
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+</mule>
